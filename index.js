@@ -22,6 +22,11 @@ const items = [
   },
 ];
 
+// selecting classes for a popup preview image
+const popupElement = document.querySelector(".popup");
+const popupImage = document.querySelector(".popup__image");
+const popupCloseButton = document.querySelector(".popup__close");
+
 class Card {
   constructor(data, cardSelector) {
     this._title = data.title;
@@ -42,6 +47,7 @@ class Card {
 
   generateCard() {
     this._element = this._getTemplate();
+    this._setEventListeners();
 
     this._element.querySelector(
       ".card__image"
@@ -52,6 +58,29 @@ class Card {
       this._price;
 
     return this._element;
+  }
+
+  // popup handlers to preview image 
+  _handleOpenPopup() {
+    popupImage.src = this._image;
+    popupElement.classList.add("popup_is-opened");
+  }
+
+  _handleClosePopup() {
+    popupImage.src = this._image;
+    popupElement.classList.remove("popup_is-opened");
+  }
+
+  _setEventListeners() {
+    this._element.addEventListener("click", () => {
+      // open the popup
+      this._handleOpenPopup();
+    });
+
+    popupCloseButton.addEventListener("click", () => {
+      // close the popup
+      this._handleClosePopup();
+    });
   }
 }
 
