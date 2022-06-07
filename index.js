@@ -25,6 +25,7 @@ const items = [
 const cardList = document.querySelector(".card-list__items");
 const popupElement = document.querySelector(".popup");
 const popupImage = document.querySelector(".popup__image");
+const popupCaption = document.querySelector(".popup__caption");
 const popupCloseButton = document.querySelector(".popup__close");
 const defaultCardButton = document.querySelector(".filter__button_type_grid");
 const horizontalCardButton = document.querySelector(
@@ -84,6 +85,16 @@ class DefaultCard extends Card {
     this._element.querySelector(".card__title").textContent = this._title;
 
     return this._element;
+  }
+
+  _handleOpenPopup() {
+    popupCaption.textContent = this._description;
+    super._handleOpenPopup();
+  }
+
+  _handleClosePopup() {
+    popupCaption.textContent = "";
+    super._handleClosePopup();
   }
 }
 
