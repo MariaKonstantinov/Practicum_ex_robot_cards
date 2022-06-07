@@ -22,17 +22,17 @@ const items = [
   },
 ];
 
-// selecting classes for a popup preview image
+const cardList = document.querySelector(".card-list__items");
 const popupElement = document.querySelector(".popup");
 const popupImage = document.querySelector(".popup__image");
 const popupCloseButton = document.querySelector(".popup__close");
+const defaultCardButton = document.querySelector(".filter__button_type_grid");
+const horizontalCardButton = document.querySelector(
+  ".filter__button_type_column"
+);
 
 class Card {
-  constructor(data, cardSelector) {
-    this._title = data.title;
-    this._description = data.description;
-    this._price = data.price;
-    this._image = data.image;
+  constructor(cardSelector) {
     this._cardSelector = cardSelector;
   }
 
@@ -45,9 +45,60 @@ class Card {
     return cardElement;
   }
 
+  _handleOpenPopup() {
+    popupImage.src = this._image;
+    popupElement.classList.add("popup_is-opened");
+  }
+
+  _handleClosePopup() {
+    popupImage.src = "";
+    popupElement.classList.remove("popup_is-opened");
+  }
+
+  _setEventListeners() {
+    this._element.addEventListener("click", () => {
+      this._handleOpenPopup();
+    });
+
+    popupCloseButton.addEventListener("click", () => {
+      this._handleClosePopup();
+    });
+  }
+}
+
+class DefaultCard extends Card {
+  constructor(data, cardSelector) {
+    super(cardSelector);
+    this._title = data.title;
+    this._description = data.description;
+    this._image = data.image;
+  }
+
   generateCard() {
-    this._element = this._getTemplate();
-    this._setEventListeners();
+    this._element = super._getTemplate();
+    super._setEventListeners();
+
+    this._element.querySelector(
+      ".card__image"
+    ).style.backgroundImage = `url(${this._image})`;
+    this._element.querySelector(".card__title").textContent = this._title;
+
+    return this._element;
+  }
+}
+
+class HorizontalCard extends Card {
+  constructor(data, cardSelector) {
+    super(cardSelector);
+    this._title = data.title;
+    this._description = data.description;
+    this._price = data.price;
+    this._image = data.image;
+  }
+
+  generateCard() {
+    this._element = super._getTemplate();
+    super._setEventListeners();
 
     this._element.querySelector(
       ".card__image"
@@ -59,35 +110,26 @@ class Card {
 
     return this._element;
   }
-
-  // popup handlers to preview image 
-  _handleOpenPopup() {
-    popupImage.src = this._image;
-    popupElement.classList.add("popup_is-opened");
-  }
-
-  _handleClosePopup() {
-    popupImage.src = this._image;
-    popupElement.classList.remove("popup_is-opened");
-  }
-
-  _setEventListeners() {
-    this._element.addEventListener("click", () => {
-      // open the popup
-      this._handleOpenPopup();
-    });
-
-    popupCloseButton.addEventListener("click", () => {
-      // close the popup
-      this._handleClosePopup();
-    });
-  }
 }
 
-items.forEach((item) => {
-  const card = new Card(item, ".horizontal-card");
-  const cardElement = card.generateCard();
+const renderElements = (isGrid) => {
+  cardList.innerHTML = "";
+  items.forEach((item) => {
+    const card = isGrid
+      ? new DefaultCard(item, ".default-card")
+      : new HorizontalCard(item, ".horizontal-card");
 
-  // Add to the DOM
-  document.querySelector(".card-list__items").append(cardElement);
+    const cardElement = card.generateCard();
+    cardList.append(cardElement);
+  });
+};
+
+defaultCardButton.addEventListener("click", () => {
+  renderElements(true);
 });
+
+horizontalCardButton.addEventListener("click", () => {
+  renderElements(false);
+});
+
+renderElements();
