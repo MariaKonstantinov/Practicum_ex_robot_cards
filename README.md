@@ -1,6 +1,8 @@
 # Project: Product Cards
 ### Overview  
 
+Project exercise from Yandex Practicum Web Development program 2022.
+
 * Project Technologies
 * Project Link  
  
