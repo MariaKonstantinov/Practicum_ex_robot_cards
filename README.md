@@ -3,7 +3,7 @@
 
 Project exercise from Yandex Practicum Web Development program 2022.
 
-Practicing with interfaces in OOP JS (markup template inside JS class, adding data to DOM, scaling JS class).
+Practicing with interfaces in OOP JS: Markup template inside JS class, adding data to DOM, scaling JS class.
 
 * Project Technologies
 * Project Link  
